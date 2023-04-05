@@ -37,5 +37,5 @@ export default function MintNft() {
     return(
         <Text color='#000'>Hi</Text>
     )
-
 }
+

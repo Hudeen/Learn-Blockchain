@@ -20,7 +20,6 @@ import {
   import { polygonMumbai } from '@wagmi/core/chains'
   import { useState } from 'react'
 
-
   export default function Popup() {
     const {address, isConnected} = useAccount();
     const {data} = useBalance({
@@ -44,7 +43,7 @@ import {
           toast({
             title: 'Switch network pls',
             duration: 9000,
-            isClosable: true,
+            isClosable: true
           })
           setCounter(counter + 1)
         }
