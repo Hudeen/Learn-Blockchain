@@ -15,7 +15,6 @@ return(
         <Center><Popup /></Center>
     </Flex>
 )
-
 }
 
  

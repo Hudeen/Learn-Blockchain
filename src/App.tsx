@@ -1,13 +1,13 @@
 import Header from './web/Header'
-import {
-  Box,
-} from '@chakra-ui/react'
+import Nft from './web/Nft'
+import { Box } from '@chakra-ui/react'
 
 function App() {
 
   return (
     <Box className="App">
       <Header />
+      <Nft />
     </Box>
   )
 }

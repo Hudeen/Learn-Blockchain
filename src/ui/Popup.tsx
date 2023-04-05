@@ -12,19 +12,48 @@ import {
     Box,
     Text,
     VStack,
+    useToast
   } from '@chakra-ui/react'
-  import { useConnect, useAccount, useBalance} from 'wagmi'
+  import { useConnect, useBalance, useAccount, useChainId } from 'wagmi'
+  import  { getNetwork, switchNetwork } from '@wagmi/core'
   import metalog from '../assets/img/metalog.png'
+  import { polygonMumbai } from '@wagmi/core/chains'
+  import { useState } from 'react'
+
 
   export default function Popup() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
     const {address, isConnected} = useAccount();
-    const {data} = useBalance({});
+    const {data} = useBalance({
+      address: address
+    });
+    const { chain, chains } = getNetwork()
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const { connect, connectors, isLoading, pendingConnector } = useConnect();
+    const toast = useToast()
+    const [ counter, setCounter ] =  useState(0)
 
-        if (isConnected == true && address != undefined) {return(
-            <>
-            <Button color='#0e0e0e'  _hover={{ bg: '#ffffff' }} bgColor='#e4e4e4' onClick={onOpen}>{isConnected ? (address.slice(0, 6) + '...' + address.slice(-4)) : "Wallet Connect"}</Button>
+    async function Switch() {
+      const network = await switchNetwork({
+        chainId: polygonMumbai.id
+      })
+    }
+
+    if(chain != undefined){
+      if(chain.id != polygonMumbai.id && isConnected) {Switch()
+        if (counter == 0){
+          toast({
+            title: 'Switch network pls',
+            duration: 9000,
+            isClosable: true,
+          })
+          setCounter(counter + 1)
+        }
+      }
+    }
+
+    if (isConnected == true && address != undefined) {return(
+    <>
+    <Button color='#0e0e0e' _hover={{ bg: '#ffffff' }} bgColor='#e4e4e4' onClick={onOpen}>{isConnected ? (address.slice(0, 6) + '...' + address.slice(-4)) : "Wallet Connect"}</Button>
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay /> 
               <ModalContent>
@@ -35,7 +64,7 @@ import {
                         <VStack>
                             <Image src={metalog} borderRadius='full' boxSize='150px' height='100px' width='100px'/>
                             <Text>{isConnected ? (address.slice(0, 6) + '...' + address.slice(-4)) : "Wallet Connect"}</Text>
-                            <Text>{data?.formatted.slice(0, 6)} {data?.symbol}</Text>
+                            <Text>{data?.formatted.slice(0, 6)} {data?.symbol}</Text> 
                         </VStack>
                     </Box>
                 </ModalBody>
