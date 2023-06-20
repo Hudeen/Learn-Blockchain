@@ -12,7 +12,7 @@ const { provider, chains } = configureChains(
   [polygonMumbai],
   [alchemyProvider({ apiKey: 'HwPhncBI0sW5bDIBkC7EDz1zUafWrAZ-' }), publicProvider()],
 )
- 
+
 const client = createClient({
   autoConnect: false,
   connectors: [new InjectedConnector({ chains })],
